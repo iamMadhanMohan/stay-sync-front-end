@@ -35,7 +35,7 @@ const AllGuests = () => {
     "Last name",
     "Room number",
     "Room type",
-    "Checkout date",
+    "Checkin date",
     "Amount paid",
     "Amount Balance",
     "Action",
@@ -63,6 +63,72 @@ const AllGuests = () => {
     navigation("/review", { state: { ...item, action: "view" } });
   }
 
+  function handleFilter(msg) {
+    if (msg == "all") {
+      setData(allGuestData);
+    } else if (msg == "atoz") {
+      let arrayOfObjects = [...allGuestData];
+
+      arrayOfObjects.sort((a, b) => {
+        const nameA = a.guest.guestFirstName.toUpperCase();
+        const nameB = b.guest.guestFirstName.toUpperCase();
+
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+        return 0;
+      });
+      setData(arrayOfObjects);
+    } else if (msg == "latest") {
+      let arrayOfObjects = [...allGuestData];
+
+      arrayOfObjects.sort((a, b) => {
+        const nameA = a.guestCheckinDate;
+        const nameB = b.guestCheckinDate;
+
+        if (nameA > nameB) {
+          return -1;
+        }
+        if (nameA < nameB) {
+          return 1;
+        }
+        return 0;
+      });
+      setData(arrayOfObjects);
+    } else if (msg == "room number") {
+      let arrayOfObjects = [...allGuestData];
+
+      arrayOfObjects.sort((a, b) => {
+        const nameA = a.guestRoomNumber;
+        const nameB = b.guestRoomNumber;
+
+        if (nameA > nameB) {
+          return -1;
+        }
+        if (nameA < nameB) {
+          return 1;
+        }
+        return 0;
+      });
+      setData(arrayOfObjects);
+    } else if (msg == "single bed") {
+      setData(
+        allGuestData.filter((item) => item.guestRoomType == "single bed")
+      );
+    } else if (msg == "double bed") {
+      setData(
+        allGuestData.filter((item) => item.guestRoomType == "double bed")
+      );
+    } else if (msg == "triple bed") {
+      setData(
+        allGuestData.filter((item) => item.guestRoomType == "triple bed")
+      );
+    }
+  }
+
   // current page
   const indexOfLastRow = curentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
@@ -83,13 +149,39 @@ const AllGuests = () => {
               title="Filter by"
               className="mb-3"
             >
-              <Dropdown.Item as="button">Date</Dropdown.Item>
-              <Dropdown.Item as="button">A-Z</Dropdown.Item>
-              <Dropdown.Item as="button">Z-A</Dropdown.Item>
-              <Dropdown.Item as="button">Room Number</Dropdown.Item>
-              <Dropdown.Item as="button">Single bed</Dropdown.Item>
-              <Dropdown.Item as="button">Double bed</Dropdown.Item>
-              <Dropdown.Item as="button">Triple bed</Dropdown.Item>
+              <Dropdown.Item as="button" onClick={() => handleFilter("all")}>
+                All
+              </Dropdown.Item>
+              <Dropdown.Item as="button" onClick={() => handleFilter("atoz")}>
+                A-Z
+              </Dropdown.Item>
+              <Dropdown.Item as="button" onClick={() => handleFilter("latest")}>
+                Latest
+              </Dropdown.Item>
+              <Dropdown.Item
+                as="button"
+                onClick={() => handleFilter("room number")}
+              >
+                Room Number
+              </Dropdown.Item>
+              <Dropdown.Item
+                as="button"
+                onClick={() => handleFilter("single bed")}
+              >
+                Single bed
+              </Dropdown.Item>
+              <Dropdown.Item
+                as="button"
+                onClick={() => handleFilter("double bed")}
+              >
+                Double bed
+              </Dropdown.Item>
+              <Dropdown.Item
+                as="button"
+                onClick={() => handleFilter("triple bed")}
+              >
+                Triple bed
+              </Dropdown.Item>
             </DropdownButton>
             <Form>
               <Row>
@@ -142,7 +234,7 @@ const AllGuests = () => {
                       <small>{item.guestRoomType}</small>
                     </td>
                     <td>
-                      <small>{item.guestCheckoutDate}</small>
+                      <small>{item.guestCheckinDate}</small>
                     </td>
                     <td>
                       <small>{item.guestAmountPaid}</small>

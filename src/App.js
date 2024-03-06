@@ -14,7 +14,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <div style={{ backgroundColor: "whitesmoke" }}>
-      <BrowserRouter basename="/stay-sync">
+      <BrowserRouter>
         <Navigation />
         <div className="inter-font container">
           <Routes>
